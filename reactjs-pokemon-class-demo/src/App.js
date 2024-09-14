@@ -1,13 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import PokemonFetcher from './pokemonFetcher';
+import PokemonFetcher from "./pokemonFetcher";
 
-class App extends React.Component() {
+class App extends React.Component {
 
   render(){
     return (
       <div className="App">
+                <PokemonFetcher />
+                {/* <PokemonFetcher />
+                <PokemonFetcher />
+                <PokemonFetcher />
+                <PokemonFetcher /> */}
+
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -22,10 +28,12 @@ class App extends React.Component() {
             Learn React
           </a>
         </header>
-        <PokemonFetcher />
+        {/* <PokemonFetcher /> */}
       </div>
     );
-  } // The render step is where we can return our jsx
+  }
+
+  
 }
 
 export default App;

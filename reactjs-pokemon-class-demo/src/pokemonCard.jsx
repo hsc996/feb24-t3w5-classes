@@ -1,5 +1,4 @@
 
-
 export default function PokemonCard (props){
     return(
         <h1>
