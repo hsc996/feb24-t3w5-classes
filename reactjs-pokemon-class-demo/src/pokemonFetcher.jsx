@@ -10,45 +10,59 @@ export default class PokemonFetcher extends React.Component {
 		super(props);
 
 		this.state = {
-			pokemonList: []
+			pokemonList: [],
+			// pokemon1: null,
+			// pokemon2: null
+			userJwt: null
 		}
 	}
 
-    // Runs automatically once when the page first loads
-    async componentDidMount(){
+	// runs automatically ONCE when the page first loads 
+	async componentDidMount(){
 
-        for (let index = 0; index < 6; index++){
+		for (let index = 0; index < 6; index++) {
+			
+			// generate a random number for random Pokemon number 
+			let randomNumber = Math.floor(Math.random() * 1025) + 1;
 
-            // Generate a random number for random pokemon number
-            let randomNumber = Math.floor(Math.random() * 1025) + 1;
+			// pass random Pokemon number into fetch request
+			let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomNumber}`);
+			let data = await response.json();
 
-            // Pass random Pokemon number into fetch request
-            let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomNumber}`);
-            let data = await response.json();
+			// set fetch response data into state 
+			// this.state.pokemonList.push(data);
+			// this.setState({pokemonList: [data]});
+			// this.setState({pokemonList: [...this.state.pokemonList, data]});
+			this.setState((previousState) => {
+				return {
+					pokemonList: [...previousState.pokemonList, data]
+				}
+			});
+			
+		}
+		
 
-            // Set fetch response data into state
-            // this.setState({pokemonList: [data]});
-            // this.setState({pokemonList: [...this.state.pokemonList, data]}); // Make a new array witht he combination of these 2 things
-            this.setState((previousState) => {
-                return {
-                    pokemonList: [...previousState.pokemonList, data]
-                }
-            }); // Modifying state from previousState allows you to modify from the latest version of the state -- this will protect your data, paritcularly useful will large datasets. Provides stability.
-        }
+		console.log("PokemonFetcher first load on the page");
+	}
 
+	componentDidUpdate(){
+		console.log("Page has rendered! The current state is: " + this.state.pokemonList);
 
-        console.log("PokemonFetcher first load on the page");
-
-    }
+		if (this.state.userJwt){
+			console.log("User is logged in!");
+		} else {
+			console.log("User is logged out");
+		}
+	}
 
 	render(){
 		return (
 			<div>
 				<h1>Pokemon Data</h1>
-				{this.state.pokemonList.map(pokemon => {
-					return <PokemonCard name={pokemon.name} />
+				{this.state.pokemonList.map((pokemon, index) => {
+					return <PokemonCard key={pokemon.name + index} name={pokemon.name} />
 				})}
-				
+
 				<button onClick={() => {
 					this.setState({pokemonList: []});
 				}}>
